@@ -1,1 +1,61 @@
-<p>category works!</p>
+<div class="row justify-content-center md-3 ">
+  <div class="col-md-4 text-center">
+    <h1>Todo Categories</h1>
+    <p class="text-info">
+      Contrary to popular belief, Lorem Ipsum is not simply random text.
+    </p>
+  </div>
+</div>
+
+<form #f="ngForm" (ngSubmit)=" f.form.valid && onSubmit(f)" action="" >
+  <div class="row g-3">
+    <div class="col-10">
+      <input
+        type="text"
+        class="form-control-plaintext drop-shadow border-danger"
+        id="categoryName"
+        placeholder="Add New Category Here"
+        name="category"
+        [(ngModel)]="categoryName"
+        required
+        #category="ngModel"
+        [ngClass]="{'border-danger':f.submitted && category.invalid}"
+        />
+    </div>
+    <button type="submit" class="btn btn-primary col-2 btn-todo btn-block drop-shadow">
+    {{buttonStatus}}
+    </button>
+  </div>
+  <div class="text-danger ml-3" *ngIf="f.submitted && category.invalid && category.errors">
+    category invalid.
+  </div>
+</form>
+
+<div class="row categories-list" >
+  <div class="col-md-3" *ngFor="let item of categories">
+    <div class="card drop-shadow" [style.border-left-color]="item.data.colorCode" [routerLink]="['/todo',item.id]">
+      <div class="card-body">
+        <div class="clearfix">
+          <div class="float-start">
+            <div class="badge bg-primary">
+              CATEGORY
+            </div>          
+          </div> 
+          <div class="float-end cat-tools">              
+              <small><fa-icon [icon]="faPencil"  (click)="OnEdit(item.id, item.data.category)"></fa-icon></small>
+              <small><fa-icon style="margin-left:5px ;"  (click)="OnDelete(item.id)" [icon]="faTrash" class="text-danger" ></fa-icon></small>               
+          </div>    
+        </div> 
+        <div class="todo-content">
+          <h3 [style.color]="item.data.colorCode" >{{item.data.category}}</h3>
+          <small class="text-secondary">
+            With supporting text below as a natural lead-in to additional content.
+          </small>
+        </div>  
+        <span class="badge bg-danger">
+          {{item.data.todoCount}}-Todos
+        </span> 
+      </div>
+    </div>
+  </div>
+</div>

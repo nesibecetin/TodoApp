@@ -1,1 +1,83 @@
-<p>todo works!</p>
+<div class="row justify-content-center md-3">
+  <div class="col-md-4 text-center">
+    <h1>Todo Categories</h1>
+    <p class="text-info">
+      Contrary to popular belief, Lorem Ipsum is not simply random text.
+    </p>
+  </div>
+</div>
+
+<form #f="ngForm" (ngSubmit)="f.form.valid && onSubmit(f)" action="">
+  <div class="row g-3">
+    <div class="col-10">
+      <input
+        type="text"
+        class="form-control-plaintext drop-shadow"
+        id="todoName"
+        placeholder="Add New Todo Here"
+        name="todo"
+        required
+        [(ngModel)]="tododescription"
+        #todo="ngModel"
+        [ngClass]="{ 'border-danger': f.submitted && todo.invalid }"
+      />
+    </div>
+    <button
+      type="submit"
+      class="btn btn-primary col-2 btn-todo btn-block drop-shadow"
+    >
+      {{ buttonStatus }}
+    </button>
+  </div>
+  <div
+    class="text-danger ml-3"
+    *ngIf="f.submitted && todo.invalid && todo.errors"
+  >
+    Todo invalid.
+  </div>
+</form>
+
+<div class="row justify-content-center todo-list">
+  <div class="col-md-6">
+    <div class="card" *ngFor="let item of todos">
+      <div class="card-body">
+        <div class="clearfix">
+          <div class="float-start text-secondary">
+            <fa-icon [icon]="faCircle" class="text-danger" *ngIf="!item.data.isCompleted"></fa-icon>
+            <fa-icon [icon]="faCheck" class="text-success" *ngIf="item.data.isCompleted"></fa-icon>
+            {{ item.data.todo }}
+            <hr *ngIf="item.data.isCompleted" />
+          </div>
+          <div class="float-end">
+            <fa-icon
+              [icon]="faCheckCircle"
+              class="text-success"
+              (click)="onCompleted(item.id)"
+              *ngIf="!item.data.isCompleted"
+            ></fa-icon>
+            <fa-icon
+              [icon]="faTimesCircle"
+              class="text-danger"
+              (click)="onUnCompleted(item.id)"
+              *ngIf="item.data.isCompleted"
+            ></fa-icon>
+            <div class="todo-tools">
+              <small>
+                <fa-icon
+                  [icon]="faPencil"
+                  class="text-warning"
+                  (click)="onEdit(item.id, item.data.todo)"
+                ></fa-icon>
+                <fa-icon
+                  [icon]="faTrash"
+                  class="text-danger"
+                  (click)="onDelete(item.id)"
+                ></fa-icon>
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
